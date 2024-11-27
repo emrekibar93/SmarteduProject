@@ -1,0 +1,2 @@
+# SmarteduProject
+Smart Edu Repository
