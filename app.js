@@ -31,6 +31,7 @@ app.use('*',(req,res,next)=>{
     userIN = req.session.userID;
     next();
 })
+
 //Routes
 app.use('/', pageRoute)
 app.use('/courses',courseRoute)
