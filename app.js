@@ -49,11 +49,11 @@ app.use('/categories', categoryRoute)
 app.use('/users', userRoute)
 
 //connect db
-mongoose.connect("mongodb://localhost/smartedu-db").then(() => {
+mongoose.connect("mongodb+srv://emrekibar93:zolfAxnxAHMMeH16@cluster0.nf7jr.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0").then(() => {
     console.log('Connected DB')
 })
 
-const port = 3000;
+const port = process.env.port || 3000;
 app.listen(port, () => {
 
     console.log(`uygulama ${port} portunda baslatildi`);
