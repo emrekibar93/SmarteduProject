@@ -26,6 +26,7 @@ exports.getContactPage = (req,res)=>{
     res.status(200).render('contact',{page_name: "contact"});
 }
 exports.sendEmail = async (req,res)=>{
+    try{
     const outputMessage = `
     <h1>Message Details</h1>
      <ul>
@@ -39,8 +40,8 @@ exports.sendEmail = async (req,res)=>{
         port: 465,
         secure: true, // true for port 465, false for other ports
         auth: {
-          user: "emrekibar993@gmail.com",
-          pass: "tjdx xdph oijo zgdr",
+          user: "mygmail@gmail.com",
+          pass: "gmailpass",
         },
       });
       
@@ -48,8 +49,8 @@ exports.sendEmail = async (req,res)=>{
      
         // send mail with defined transport object
         const info = await transporter.sendMail({
-          from: '"SmartContactEdu" <emrekibar993@gmail.com>', // sender address
-          to: "emrekibar@yandex.com", // list of receivers
+          from: '"SmartContactEdu" <mygmail@gmail.com>', // sender address
+          to: "to @yandex.com", // list of receivers
           subject: "Smart Edu Contact Form", // Subject line
           text: "Cantact Forum", // plain text body
           html: outputMessage, // html body
@@ -57,5 +58,13 @@ exports.sendEmail = async (req,res)=>{
       
         console.log("Message sent: %s", info.messageId);
         // Message sent: <d786aa62-4e0a-070a-47ed-0b0666549519@ethereal.email>
+
+        req.flash('success',"We received  your message succesfully")
         res.status(200).redirect('contact')
+    }
+    catch (err) {
+        req.flash("error",`Someting happened ${err}`)
+        res.status(200).redirect('contact')
+    }
+
 }

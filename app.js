@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose')
 const session = require('express-session')
 const MongoStore = require('connect-mongo');
+const flash = require('connect-flash');
 const pageController = require("./controllers/pageController");
 const pageRoute = require("./routes/pageRoutes");
 const courseRoute = require("./routes/courseRoute");
@@ -20,26 +21,31 @@ global.userIN = null;
 
 app.use(express.static("public"))
 app.use(express.json())
-app.use(express.urlencoded({extended:true}))
+app.use(express.urlencoded({ extended: true }))
 app.use(session({
     secret: 'my_keyboard_cat',
     resave: false,
     saveUninitialized: true,
     store: MongoStore.create({ mongoUrl: 'mongodb://localhost/smartedu-db' })
-  }))
-app.use('*',(req,res,next)=>{
+}))
+app.use('*', (req, res, next) => {
     userIN = req.session.userID;
+    next();
+})
+app.use(flash());
+app.use((req, res, next) => {
+    res.locals.flashMessages = req.flash();
     next();
 })
 
 //Routes
 app.use('/', pageRoute)
-app.use('/courses',courseRoute)
-app.use('/categories',categoryRoute)
-app.use('/users',userRoute)
+app.use('/courses', courseRoute)
+app.use('/categories', categoryRoute)
+app.use('/users', userRoute)
 
 //connect db
-mongoose.connect("mongodb://localhost/smartedu-db").then(()=>{
+mongoose.connect("mongodb://localhost/smartedu-db").then(() => {
     console.log('Connected DB')
 })
 
